@@ -44,7 +44,7 @@ def on_message(client, userdata, message):
         for pid, info in produits_pris.items():
             if info["nom"].lower() in produit_nom.lower():
                 produits_payes[pid] = True
-                print(f"💰 Paiement confirmé pour: {produit_nom}")
+                print(f"Paiement confirmé pour: {produit_nom}")
                 ouvrir_barriere_auto()
                 break
 
