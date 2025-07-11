@@ -1,3 +1,5 @@
+# installer et activer env python
+
 ```bash
 # Service Payment
 cd payment-service && pip install -r requirements.txt
