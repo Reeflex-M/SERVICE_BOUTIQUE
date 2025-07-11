@@ -25,6 +25,12 @@ curl "http://localhost:8003/health"    # Alarme
 
 ### Achat Normal
 
+1. **Client prend un produit** → Service Product publie "produit_pris" via MQTT
+2. **Barrière surveille** → Timer de 10 secondes démarre
+3. **Client paie** → Service Payment publie "paiement_réussi"
+4. **Barrière s'ouvre** → Accès autorisé pendant 5 secondes
+5. **Fermeture auto** → Barrière se referme automatiquement
+
 ```bash
 curl "http://localhost:8001/product/1"
 
@@ -36,6 +42,11 @@ curl "http://localhost:8003/alarmes"
 ```
 
 ### Vol/Oubli de Paiement
+
+1. **Client prend un produit** → Produit marqué comme pris
+2. **Pas de paiement** → Timer de 10s expire
+3. **Alarme déclenchée** → Message d'alarme sécurité envoyé
+4. **Barrière reste fermée** → Accès bloqué
 
 ```bash
 curl "http://localhost:8001/product/2"
