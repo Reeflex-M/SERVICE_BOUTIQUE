@@ -81,4 +81,3 @@ curl "http://localhost:8001/products"
 curl "http://localhost:8001/product/1"
 curl "http://localhost:8001/product/2"
 ```
-"# SERVICE_BOUTIQUE" 
