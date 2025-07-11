@@ -51,7 +51,7 @@ def get_product(product_id: int):
                 "prix": product['price']
             }
             mqtt_client.publish("boutique/product", json.dumps(message))
-            print(f"📡 MQTT publié: produit pris {product['name']}")
+            print(f"MQTT publié: produit pris {product['name']}")
             
             return product
     return None

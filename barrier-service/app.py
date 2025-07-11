@@ -77,7 +77,7 @@ def fermer_barriere_auto():
     """Fermer automatiquement la barrière"""
     global barriere_ouverte
     barriere_ouverte = False
-    print("🚪 Barrière FERMÉE automatiquement")
+    print(" Barrière FERMÉE automatiquement")
 
 def connect_mqtt():
     mqtt_client.on_message = on_message

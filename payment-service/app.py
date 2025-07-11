@@ -45,7 +45,7 @@ def payer(produit: str, montant: float):
     paiements.append(nouveau_paiement)
     compteur_id += 1
     
-    print(f"💰 Paiement reçu: {montant}€ pour {produit}")
+    print(f"Paiement reçu: {montant}€ pour {produit}")
     
     # Publier sur MQTT
     message = {
