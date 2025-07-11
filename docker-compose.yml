@@ -1,0 +1,91 @@
+version: "3.8"
+
+services:
+  # Broker MQTT Mosquitto
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: boutique_mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Service de paiement
+  payment-service:
+    build: ./payment-service
+    container_name: boutique_payment
+    ports:
+      - "8000:8000"
+    environment:
+      - MQTT_BROKER=mosquitto
+      - MQTT_PORT=1883
+    depends_on:
+      - mosquitto
+    volumes:
+      - payment_data:/app/data
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Service de barrière
+  barrier-service:
+    build: ./barrier-service
+    container_name: boutique_barrier
+    ports:
+      - "8002:8002"
+    environment:
+      - MQTT_BROKER=mosquitto
+      - MQTT_PORT=1883
+    depends_on:
+      - mosquitto
+      - payment-service
+    volumes:
+      - barrier_data:/app/data
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Service de produits
+  product-service:
+    build: ./product-service
+    container_name: boutique_products
+    ports:
+      - "8001:8001"
+    volumes:
+      - product_data:/app/data
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Service d'alarme
+  alarm-service:
+    build: ./alarm-service
+    container_name: boutique_alarm
+    ports:
+      - "8003:8003"
+    environment:
+      - MQTT_BROKER=mosquitto
+      - MQTT_PORT=1883
+    depends_on:
+      - mosquitto
+      - payment-service
+      - barrier-service
+    volumes:
+      - alarm_data:/app/data
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+volumes:
+  payment_data:
+  barrier_data:
+  product_data:
+  alarm_data:
+
+networks:
+  boutique-network:
+    driver: bridge
